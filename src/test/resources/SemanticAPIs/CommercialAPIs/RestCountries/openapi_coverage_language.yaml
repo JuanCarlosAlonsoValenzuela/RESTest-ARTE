@@ -1,0 +1,38 @@
+openapi: 3.0.0
+servers:
+  - url: 'https://restcountries.com'
+info:
+  description: 'REST countries API'
+  title: REST countries API
+  version: v2.0.5
+paths:
+  /v3.1/lang/{lang}:
+    get:
+      operationId: v31Language
+      parameters:
+        - name: fields
+          description: You can filter the output of your request to include only the specified fields.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: lang
+          description: Search by language name (new!) or iso639_2 code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+        '404':
+          description: error
+          schema:
+            status:
+              type: integer
+            message:
+              type: string
+        '502':
+          description: server error
+components:
+  schemas: { }

@@ -34,7 +34,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/iata
+          - "http://dbpedia.org/property/iata"
           objectValues: null
         valid: true
     - name: icao
@@ -49,7 +49,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/icao
+          - "http://dbpedia.org/property/icao"
           objectValues: null
         valid: true
     expectedResponse: 200

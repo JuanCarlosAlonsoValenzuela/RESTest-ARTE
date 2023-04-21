@@ -34,8 +34,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/image
-          - http://dbpedia.org/property/url
+          - "http://dbpedia.org/property/wizardsImageUrl"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -66,8 +65,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/image
-          - http://dbpedia.org/property/url
+          - "http://dbpedia.org/property/wizardsImageUrl"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -98,7 +96,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/ontology/ingredientName
+          - "http://dbpedia.org/ontology/ingredientName"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -121,11 +119,15 @@ testConfiguration:
       in: path
       weight: null
       generators:
-      - type: RandomEnglishWord
+      - type: RandomInputValue
         genParameters:
-        - name: maxWords
+        - name: csv
           values:
-          - 1
+          - src/main/resources/TestData/Generated/RecipeFoodNutrition/operations-Search-Get_Comparable_Products_upc.csv
+          objectValues: null
+        - name: predicates
+          values:
+          - "http://dbpedia.org/property/cupChamp"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -156,7 +158,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/wines
+          - "http://dbpedia.org/property/wines"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -206,7 +208,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/food
+          - "http://dbpedia.org/property/food"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -244,7 +246,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/url
+          - "http://dbpedia.org/property/url"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -267,11 +269,15 @@ testConfiguration:
       in: query
       weight: null
       generators:
-      - type: RandomEnglishWord
+      - type: RandomInputValue
         genParameters:
-        - name: maxWords
+        - name: csv
           values:
-          - 1
+          - src/main/resources/TestData/Generated/RecipeFoodNutrition/operations-Compute-Guess_Nutrition_by_Dish_Name_title.csv
+          objectValues: null
+        - name: predicates
+          values:
+          - "http://dbpedia.org/property/title"
           objectValues: null
         valid: true
     expectedResponse: 200

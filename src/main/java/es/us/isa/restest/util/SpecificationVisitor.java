@@ -23,10 +23,9 @@ public class SpecificationVisitor {
 		//Utility class
 	}
 
-	public static final String MEDIA_TYPE_APPLICATION_JSON_REGEX = "^((application/.*(\\\\+)?json.*)|(\\*/\\*))$";
-	public static final String MEDIA_TYPE_TEXT_PLAIN_REGEX = "^text/plain.*$";
-	public static final String MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
-	public static final String MEDIA_TYPE_MULTIPART_FORM_DATA = "multipart/form-data";
+	private static final String MEDIA_TYPE_APPLICATION_JSON_REGEX = "^application/.*(\\\\+)?json.*$";
+	private static final String MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
+	private static final String MEDIA_TYPE_MULTIPART_FORM_DATA = "multipart/form-data";
 	private static final String BOOLEAN_TYPE = "boolean";
 
 	/**
@@ -74,8 +73,7 @@ public class SpecificationVisitor {
 
 	private static ParameterFeatures findBodyParameterFeatures(Operation operation) {
 		ParameterFeatures param = null;
-		if(operation.getRequestBody().getContent().keySet().stream().anyMatch(x -> x.matches(MEDIA_TYPE_APPLICATION_JSON_REGEX)) ||
-				operation.getRequestBody().getContent().keySet().stream().anyMatch(x -> x.matches(MEDIA_TYPE_TEXT_PLAIN_REGEX))) {
+		if(operation.getRequestBody().getContent().keySet().stream().anyMatch(x -> x.matches(MEDIA_TYPE_APPLICATION_JSON_REGEX))) {
 			param = new ParameterFeatures("body", "body", operation.getRequestBody().getRequired());
 		}
 		return param;

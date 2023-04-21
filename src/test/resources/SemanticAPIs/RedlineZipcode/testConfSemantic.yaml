@@ -26,22 +26,30 @@ testConfiguration:
       in: path
       weight: null
       generators:
-      - type: RandomEnglishWord
+      - type: RandomInputValue
         genParameters:
-        - name: maxWords
+        - name: csv
           values:
-          - 1
+          - src/main/resources/TestData/Generated/RedLine Zipcode/operations-Location_Info-Location_to_Zip_Code_state.csv
+          objectValues: null
+        - name: predicates
+          values:
+          - "http://dbpedia.org/property/state"
           objectValues: null
         valid: true
     - name: city
       in: path
       weight: null
       generators:
-      - type: RandomEnglishWord
+      - type: RandomInputValue
         genParameters:
-        - name: maxWords
+        - name: csv
           values:
-          - 1
+          - src/main/resources/TestData/Generated/RedLine Zipcode/operations-Location_Info-Location_to_Zip_Code_city.csv
+          objectValues: null
+        - name: predicates
+          values:
+          - "http://dbpedia.org/property/city"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -83,7 +91,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/zipCode
+          - "http://dbpedia.org/property/zipCode"
           objectValues: null
         valid: true
     - name: zipcode1
@@ -98,7 +106,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/zipCode
+          - "http://dbpedia.org/property/zipCode"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -140,7 +148,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/zipCode
+          - "http://dbpedia.org/property/zipCode"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -182,7 +190,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/zipCode
+          - "http://dbpedia.org/property/zipCode"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -270,11 +278,15 @@ testConfiguration:
       in: path
       weight: null
       generators:
-      - type: RandomEnglishWord
+      - type: RandomInputValue
         genParameters:
-        - name: maxWords
+        - name: csv
           values:
-          - 1
+          - src/main/resources/TestData/Generated/RedLine Zipcode/operations-Location_Info-State_to_Zip_Codes_state.csv
+          objectValues: null
+        - name: predicates
+          values:
+          - "http://dbpedia.org/property/state"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -335,18 +347,21 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/property/zipCode
+          - "http://dbpedia.org/property/zipCode"
           objectValues: null
         valid: true
     - name: addrs
       in: query
-      weight: 0.5
+      weight: 0.0
       generators:
-      - type: RandomEnglishWord
+      - type: RandomInputValue
         genParameters:
-        - name: maxWords
+        - name: csv
           values:
-          - 1
+          - src/main/resources/TestData/Generated/RedLine Zipcode/multiple-zip-codes-by-radius_addrs.csv
+          objectValues: null
+        - name: predicates
+          values: []
           objectValues: null
         valid: true
     expectedResponse: 200

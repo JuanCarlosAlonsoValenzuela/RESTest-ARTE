@@ -27,7 +27,6 @@ import static es.us.isa.restest.inputs.fuzzing.FuzzingDictionary.getNodeFuzzingV
 import static es.us.isa.restest.inputs.stateful.DataMatching.getParameterValue;
 import static es.us.isa.restest.util.FileManager.checkIfExists;
 import static es.us.isa.restest.util.SchemaManager.resolveSchema;
-import static es.us.isa.restest.util.SpecificationVisitor.MEDIA_TYPE_APPLICATION_JSON_REGEX;
 
 
 public class BodyGenerator implements ITestDataGenerator {
@@ -65,11 +64,7 @@ public class BodyGenerator implements ITestDataGenerator {
         }
 
         ObjectNode dictNode = operationPath != null && FileManager.checkIfExists(jsonPath)? (ObjectNode) JSONManager.readJSON(jsonPath) : objectMapper.createObjectNode();
-        Map.Entry<String, MediaType> mediaTypeEntry = openApiOperation.getRequestBody().getContent().entrySet()
-                .stream().filter(x -> x.getKey().matches(MEDIA_TYPE_APPLICATION_JSON_REGEX)).findFirst().orElse(null);
-        MediaType requestBody = null;
-        if (mediaTypeEntry != null)
-            requestBody = mediaTypeEntry.getValue();
+        MediaType requestBody = openApiOperation.getRequestBody().getContent().get("application/json");
 
         if (requestBody != null) {
             Schema mutatedSchema = mutate? new SchemaMutation(requestBody.getSchema(), spec.getSpecification()).mutate() : resolveSchema(requestBody.getSchema(), spec.getSpecification());
@@ -142,17 +137,13 @@ public class BodyGenerator implements ITestDataGenerator {
 
     private JsonNode createNodeFromExample(Schema<?> schema, String prefix) {
         JsonNode node = objectMapper.getNodeFactory().nullNode();
-        Map.Entry<String, MediaType> mediaTypeEntry = openApiOperation.getRequestBody().getContent().entrySet()
-                .stream().filter(x -> x.getKey().matches(MEDIA_TYPE_APPLICATION_JSON_REGEX)).findFirst().orElse(null);
-        MediaType requestBody = null;
-        if (mediaTypeEntry != null)
-            requestBody = mediaTypeEntry.getValue();
+        MediaType requestBody = openApiOperation.getRequestBody().getContent().get("application/json");
 
         //Looking for parameter example
         if (schema.getExample() != null) {
             node = SchemaManager.createValueNode(schema.getExample(), objectMapper);
         // If there's no parameter example, then it'll look for a request body example
-        } else if (requestBody != null) {
+        } else {
             Object example = null;
 
             if (requestBody.getExamples() != null) {

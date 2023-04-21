@@ -1,0 +1,109 @@
+openapi: 3.0.0
+servers:
+  - url: 'https://restcountries.com'
+info:
+  description: 'REST countries API'
+  title: REST countries API
+  version: v2.0.5
+paths:
+  /v3.1/all:
+    get:
+      operationId: v31All
+      parameters:
+        - name: fields
+          description: You can filter the output of your request to include only the specified fields.
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+#        default:
+#          description: Other responses
+  /v3.1/alpha/{code}:
+    get:
+      operationId: v31Alphacode
+      parameters:
+        - name: fields
+          description: You can filter the output of your request to include only the specified fields.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: code
+          description: Search by cca2, ccn3, cca3 or cioc country code (yes, any!)
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+#        default:
+#          description: Other responses
+  /v3.1/currency/{currency}:
+    get:
+      operationId: v31Currency
+      parameters:
+        - name: fields
+          description: You can filter the output of your request to include only the specified fields.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: currency
+          description: Search by currency name (new!) or code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+#        default:
+#          description: Other responses
+  /v3.1/lang/{lang}:
+    get:
+      operationId: v31Language
+      parameters:
+        - name: fields
+          description: You can filter the output of your request to include only the specified fields.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: lang
+          description: Search by language name (new!) or iso639_2 code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+#        default:
+#          description: Other responses
+  /v3.1/capital/{capital}:
+    get:
+      operationId: v31Capital
+      parameters:
+        - name: fields
+          description: You can filter the output of your request to include only the specified fields.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: capital
+          description: Search by capital city.
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+#        default:
+#          description: Other responses
+components:
+  schemas: { }

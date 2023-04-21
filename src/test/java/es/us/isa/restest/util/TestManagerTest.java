@@ -39,7 +39,7 @@ public class TestManagerTest {
                         "   \"type\": \"invalid_request_error\"\n" +
                         " }\n" +
                         "}\n" +
-                        "", tc.getBodyParameter().replaceAll("\r", ""));
+                        "", tc.getBodyParameter());
             assertEquals("The content type should be 'application/json'", "application/json", tc.getInputFormat());
             assertEquals("The faulty should be false", false, tc.getFaulty());
         }

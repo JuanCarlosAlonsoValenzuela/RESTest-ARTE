@@ -8,26 +8,15 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class SchemaManager {
-
-    /*
-        Swagger definitions may contain cycle references, i.e., A points to B, and
-        B (eventually) points to A. In these cases, we cannot represent the whole
-        object, e.g., A->B->A, so we represent A->B->{} (empty object without properties).
-        To achieve this, we need to keep track of the references, which is the purpose
-        of the currentRefPath.
-     */
-    private static String currentRefPath = "";
 
     private SchemaManager() {}
 
     public static Schema<?> generateFullyResolvedObjectSchema(Schema<?> schema, OpenAPI spec) {
-        Schema<?> resolvedSchema = resolveSchemaAndUpdateRefPath(schema, spec);
+        Schema<?> resolvedSchema = resolveSchema(schema, spec);
         Schema copy = new Schema();
 
         prePopulateSchema(resolvedSchema, copy);
@@ -37,8 +26,15 @@ public class SchemaManager {
             properties = new HashMap<>();
 
             for (Map.Entry<String, Schema> entry: resolvedSchema.getProperties().entrySet()) {
-                Schema<?> entryResolvedSchema = generateFullyResolvedSchema(entry.getValue(), spec);
-                properties.put(entry.getKey(), entryResolvedSchema);
+                Schema copiedSchema;
+                Schema<?> entryResolvedSchema = resolveSchema(entry.getValue(), spec);
+                if (entryResolvedSchema.getType() != null) {
+                    if (entryResolvedSchema.getType().equals("array"))
+                        copiedSchema = generateFullyResolvedArraySchema((ArraySchema) entryResolvedSchema, spec);
+                    else
+                        copiedSchema = generateFullyResolvedSchema(entryResolvedSchema, spec);
+                    properties.put(entry.getKey(), copiedSchema);
+                }
             }
         }
         copy.setProperties(properties);
@@ -54,30 +50,28 @@ public class SchemaManager {
      * without "ref" attributes).
      */
     public static Schema<?> generateFullyResolvedSchema(Schema<?> schema, OpenAPI spec) {
-        Schema<?> resolvedSchema = resolveSchemaAndUpdateRefPath(schema, spec);
-        Schema<?> fullyResolvedSchema;
+        Schema<?> resolvedSchema = resolveSchema(schema, spec);
         if ("array".equals(resolvedSchema.getType()))
-            fullyResolvedSchema = generateFullyResolvedArraySchema((ArraySchema) resolvedSchema, spec);
+            return generateFullyResolvedArraySchema((ArraySchema) resolvedSchema, spec);
         else
-            fullyResolvedSchema = generateFullyResolvedObjectSchema(resolvedSchema, spec);
-
-        if (schema.get$ref() != null) {
-            String schemaSubRef = schema.get$ref().replace("#/components/schemas", "");
-            currentRefPath = currentRefPath.replaceAll(schemaSubRef + "/.*", "");
-            currentRefPath = currentRefPath.replaceAll(schemaSubRef + "$", "");
-        }
-
-        return fullyResolvedSchema;
+            return generateFullyResolvedObjectSchema(resolvedSchema, spec);
     }
 
     public static ArraySchema generateFullyResolvedArraySchema(ArraySchema schema, OpenAPI spec) {
-        ArraySchema resolvedSchema = (ArraySchema) resolveSchemaAndUpdateRefPath(schema, spec);
+        ArraySchema resolvedSchema = (ArraySchema) resolveSchema(schema, spec);
         ArraySchema copy = new ArraySchema();
 
         prePopulateSchema(resolvedSchema, copy);
 
-        Schema<?> itemsSchema = generateFullyResolvedSchema(resolvedSchema.getItems(), spec);
-        copy.setItems(itemsSchema);
+        Schema copiedSchema;
+        Schema<?> itemsSchema = resolveSchema(resolvedSchema.getItems(), spec);
+        if (itemsSchema.getType() != null) {
+            if (itemsSchema.getType().equals("array"))
+                copiedSchema = generateFullyResolvedArraySchema((ArraySchema) itemsSchema, spec);
+            else
+                copiedSchema = generateFullyResolvedSchema(itemsSchema, spec);
+            copy.setItems(copiedSchema);
+        }
 
         return copy;
     }
@@ -127,23 +121,6 @@ public class SchemaManager {
         Schema resolvedSchema = schema;
         while (resolvedSchema.get$ref() != null) {
             resolvedSchema = spec.getComponents().getSchemas().get(resolvedSchema.get$ref().replace("#/components/schemas/", ""));
-        }
-        return resolvedSchema;
-    }
-
-    private static Schema<?> resolveSchemaAndUpdateRefPath(Schema<?> schema, OpenAPI spec) {
-        Schema resolvedSchema = schema;
-        String schemaSubRef;
-        while (resolvedSchema.get$ref() != null) {
-            schemaSubRef = resolvedSchema.get$ref().replace("#/components/schemas/", "");
-            if (!Pattern.compile("/" + schemaSubRef + "/|/" + schemaSubRef + "$").matcher(currentRefPath).find()) {
-                currentRefPath += "/" + schemaSubRef;
-                resolvedSchema = spec.getComponents().getSchemas().get(schemaSubRef);
-            } else {
-                resolvedSchema.set$ref(null);
-                resolvedSchema.setType("object");
-                resolvedSchema.setProperties(new HashMap<>());
-            }
         }
         return resolvedSchema;
     }

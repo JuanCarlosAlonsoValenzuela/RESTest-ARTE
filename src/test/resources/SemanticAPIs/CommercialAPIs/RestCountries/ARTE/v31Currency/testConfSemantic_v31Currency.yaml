@@ -1,0 +1,59 @@
+---
+auth:
+  required: true
+  queryParams: {}
+  headerParams: {}
+  apiKeysPath: null
+  headersPath: null
+  oauthPath: null
+testConfiguration:
+  operations:
+  - testPath: "/v3.1/currency/{currency}"
+    operationId: v31Currency
+    method: get
+    testParameters:
+    - name: fields
+      in: query
+      weight: 0.5
+      generators:
+      - type: RandomInputValue
+        genParameters:
+        - name: csv
+          values:
+          - src/test/resources/Restcountries/fields.csv
+          objectValues: null
+        - name: minValues
+          values:
+          - 1
+          objectValues: null
+        - name: maxValues
+          values:
+          - 5
+          objectValues: null
+        - name: separator
+          values:
+          - ","
+          objectValues: null
+        valid: true
+    - name: currency
+      in: path
+      weight: null
+      generators:
+      - type: RandomInputValue
+        genParameters:
+        - name: csv
+          values:
+          - src/main/resources/TestData/Generated/REST countries API/v31Currency_currency.csv
+          objectValues: null
+        - name: predicates
+          values:
+          - http://dbpedia.org/property/currency
+          - http://dbpedia.org/property/currencyIso
+          - http://dbpedia.org/property/currencyCode
+          objectValues: null
+        - name: numberOfTriesToGenerateRegex
+          values:
+          - 2
+          objectValues: null
+        valid: true
+    expectedResponse: 200

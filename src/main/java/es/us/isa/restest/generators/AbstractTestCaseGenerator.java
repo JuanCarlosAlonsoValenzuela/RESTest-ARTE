@@ -27,7 +27,6 @@ import io.swagger.v3.oas.models.PathItem.HttpMethod;
 
 import static es.us.isa.restest.configuration.TestConfigurationVisitor.hasStatefulGenerators;
 import static es.us.isa.restest.configuration.TestConfigurationVisitor.isArteEnabled;
-import static es.us.isa.restest.util.SpecificationVisitor.MEDIA_TYPE_APPLICATION_JSON_REGEX;
 
 /**
  * Abstract class to be implemented by test case generators
@@ -200,14 +199,11 @@ public abstract class AbstractTestCaseGenerator {
 				case "put":
 					filter.addPutMethod();
 					break;
-				case "patch":
-					filter.addPatchMethod();
-					break;
 				case "delete":
 					filter.addDeleteMethod();
 					break;
 				default:
-					throw new RESTestException("Methods other than GET, POST, PUT, PATCH and DELETE are not " +
+					throw new RESTestException("Methods other than GET, POST, PUT and DELETE are not " +
 							"allowed in the test configuration file");
 			}
 
@@ -452,12 +448,8 @@ public abstract class AbstractTestCaseGenerator {
 
 
 	protected void updateContentType(TestCase test, io.swagger.v3.oas.models.Operation operation) {
-		if (operation.getRequestBody() != null) {
-			if (operation.getRequestBody().getContent().containsKey("application/x-www-form-urlencoded"))
-				test.setInputFormat("application/x-www-form-urlencoded");
-			else if (operation.getRequestBody().getContent().keySet().stream().noneMatch(x -> x.matches(MEDIA_TYPE_APPLICATION_JSON_REGEX)))
-				test.setInputFormat(operation.getRequestBody().getContent().keySet().stream().findFirst().get());
-		}
+		if (operation.getRequestBody() != null && operation.getRequestBody().getContent().containsKey("application/x-www-form-urlencoded"))
+			test.setInputFormat("application/x-www-form-urlencoded");
 	}
 
 	// Set authentication details

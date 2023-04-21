@@ -1,0 +1,53 @@
+openapi: 3.0.0
+servers:
+  - url: 'https://restcountries.com'
+info:
+  description: 'REST countries API'
+  title: REST countries API
+  version: v2.0.5
+paths:
+  /v3.1/alpha/{code}:
+    get:
+      operationId: v31Alphacode
+      parameters:
+        - name: fields
+          description: You can filter the output of your request to include only the specified fields.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: code
+          description: Search by cca2, ccn3, cca3 or cioc country code (yes, any!)
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+        '400':
+          description: error
+          schema:
+            status:
+              type: integer
+            message:
+              type: string
+        '404':
+          description: error
+          schema:
+            message:
+              type: string
+            _links:
+              type: object
+              properties:
+                self:
+                  type: object
+                  properties:
+                    href:
+                      type: string
+                    templated:
+                      type: boolean
+#        default:
+#          description: Other responses
+components:
+  schemas: { }

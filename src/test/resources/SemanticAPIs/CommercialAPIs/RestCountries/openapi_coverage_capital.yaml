@@ -1,0 +1,36 @@
+openapi: 3.0.0
+servers:
+  - url: 'https://restcountries.com'
+info:
+  description: 'REST countries API'
+  title: REST countries API
+  version: v2.0.5
+paths:
+  /v3.1/capital/{capital}:
+    get:
+      operationId: v31Capital
+      parameters:
+        - name: fields
+          description: You can filter the output of your request to include only the specified fields.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: capital
+          description: Search by capital city.
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+        '404':
+          description: error
+          schema:
+            status:
+              type: integer
+            message:
+              type: string
+components:
+  schemas: { }

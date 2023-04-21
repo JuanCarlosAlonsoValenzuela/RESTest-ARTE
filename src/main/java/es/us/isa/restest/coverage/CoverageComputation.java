@@ -31,9 +31,9 @@ public class CoverageComputation {
     private static Logger logger = LogManager.getLogger(CoverageComputation.class.getName());
 
     public static void main(String[] args) {
-        String specPath = "src/test/resources/restest-test-resources/coverage-data/swagger.yaml";
+        String specPath = "src/test/resources/SemanticAPIs/CommercialAPIs/AmadeusHotel/---";
         OpenAPISpecification spec;
-        String testDirPath = "src/test/resources/restest-test-resources/coverage-data";
+        String testDirPath = "target/test-data/---";
         File testDir;
         int batchSize = Integer.MAX_VALUE;
         CoverageMeter coverageMeter;
@@ -46,7 +46,7 @@ public class CoverageComputation {
                     "coverage (optional, but improve performance for very large test suites, e.g., >100K test cases.");
         }
 
-        if (args.length == 2 || args.length == 3) {
+        if (args.length == 2) {
             specPath = args[0];
             testDirPath = args[1];
         }
@@ -116,7 +116,7 @@ public class CoverageComputation {
         logger.info("Generating coverage a priori");
         exportCoverageReport(coverageMeter, aPrioriCoveragePath);
         logger.info("Generating coverage a posteriori");
-        exportCoverageReport(coverageMeter.getAPosteriorCoverageMeter(batchSize), aPosterioriCoveragePath);
+        exportCoverageReport(coverageMeter.getAPosteriorCoverageMeter(5005), aPosterioriCoveragePath);
         logger.info("Coverage files generated in path {}", testDirPath);
     }
 

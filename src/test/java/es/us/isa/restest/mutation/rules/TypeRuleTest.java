@@ -3,10 +3,8 @@ package es.us.isa.restest.mutation.rules;
 import es.us.isa.restest.specification.OpenAPISpecification;
 import es.us.isa.restest.util.SchemaManager;
 import io.swagger.v3.oas.models.media.Schema;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 import static es.us.isa.restest.util.SchemaManager.generateFullyResolvedSchema;
@@ -15,13 +13,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TypeRuleTest {
-
-    @Before
-    public void resetSchemaManager() throws NoSuchFieldException, IllegalAccessException {
-        Field currentRefPath = SchemaManager.class.getDeclaredField("currentRefPath");
-        currentRefPath.setAccessible(true);
-        currentRefPath.set(null, "");
-    }
 
     @Test
     public void applyTypeRuleCommentsPostCommentTest() {

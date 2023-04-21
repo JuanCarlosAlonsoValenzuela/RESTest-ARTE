@@ -35,7 +35,7 @@ public class PredicatesTest {
 
     @Test
     public void testComputeSupportOfPredicate() {
-        String predicate = "http://dbpedia.org/ontology/countryCode";
+        String predicate = "http://dbpedia.org/property/currency";
 
         TestParameter testParameter = new TestParameter();
         testParameter.setName("Name");
@@ -49,6 +49,7 @@ public class PredicatesTest {
 
         testParameter.setGenerators(Collections.singletonList(generator));
 
+        System.setProperty("http.maxConnections", "10000");
         Integer support = computeSupportOfPredicate(predicate, testParameter);
 
         assertTrue("Error computing support", support > 0);

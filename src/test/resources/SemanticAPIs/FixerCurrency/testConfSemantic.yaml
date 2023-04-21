@@ -64,7 +64,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/ontology/currencyCode
+          - "http://dbpedia.org/property/currencyCode"
           objectValues: null
         valid: true
     - name: from
@@ -79,7 +79,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/ontology/currencyCode
+          - "http://dbpedia.org/property/currencyCode"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -110,7 +110,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/ontology/currencyCode
+          - "http://dbpedia.org/property/currencyCode"
           objectValues: null
         valid: true
     - name: base
@@ -125,7 +125,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/ontology/currencyCode
+          - "http://dbpedia.org/property/currencyCode"
           objectValues: null
         valid: true
     expectedResponse: 200
@@ -172,7 +172,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/ontology/currencyCode
+          - "http://dbpedia.org/property/currencyCode"
           objectValues: null
         valid: true
     - name: base
@@ -187,7 +187,7 @@ testConfiguration:
           objectValues: null
         - name: predicates
           values:
-          - http://dbpedia.org/ontology/currencyCode
+          - "http://dbpedia.org/property/currencyCode"
           objectValues: null
         valid: true
     - name: date

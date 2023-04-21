@@ -32,13 +32,15 @@ import static es.us.isa.restest.util.Timer.TestStep.ALL;
 public class ARTEInputGenerator {
 
     // Properties file with configuration settings
-    private static  String propertiesFilePath = "src/test/resources/semanticAPITests/ClimaCell/climacell.properties";
+    private static  String propertiesFilePath = "src/test/resources/SemanticAPIs/CommercialAPIs/DHL/findByAddress/dhl_semantic_address_regex.properties";
     private static OpenAPISpecification specification;
     private static String confPathOriginal;
     private static String semanticConfPath;
     private static String csvPath;           // Path in which the generated input values will be stored
 
     // Parameters
+    // Maximum number of candidate predicates to extract per keyword
+    public static Integer maxNumberOfCandidatePredicates = 5;
     // Minimum support of a predicate
     public static Integer minSupport = 20;
     // Parameter minimum threshold of unique parameter values to obtain: default 100
@@ -89,7 +91,7 @@ public class ARTEInputGenerator {
         }
         
         // ONLY FOR LOCAL COPY OF DBPEDIA
-        if (szEndpoint.contains("localhost") || szEndpoint.contains("127.0.0.1"))
+        if (szEndpoint.contains("localhost") || szEndpoint.contains("127.0.0.1") || szEndpoint.contains("8890"))
             System.setProperty("http.maxConnections", "10000");
 
         // ONLY FOR WHEN PROXY IS REQUIRED

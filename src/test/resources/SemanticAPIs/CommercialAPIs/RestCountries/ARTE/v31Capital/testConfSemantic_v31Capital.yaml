@@ -1,0 +1,57 @@
+---
+auth:
+  required: true
+  queryParams: {}
+  headerParams: {}
+  apiKeysPath: null
+  headersPath: null
+  oauthPath: null
+testConfiguration:
+  operations:
+  - testPath: "/v3.1/capital/{capital}"
+    operationId: v31Capital
+    method: get
+    testParameters:
+    - name: fields
+      in: query
+      weight: 0.5
+      generators:
+      - type: RandomInputValue
+        genParameters:
+        - name: csv
+          values:
+          - src/test/resources/Restcountries/fields.csv
+          objectValues: null
+        - name: minValues
+          values:
+          - 1
+          objectValues: null
+        - name: maxValues
+          values:
+          - 5
+          objectValues: null
+        - name: separator
+          values:
+          - ","
+          objectValues: null
+        valid: true
+    - name: capital
+      in: path
+      weight: null
+      generators:
+      - type: RandomInputValue
+        genParameters:
+        - name: csv
+          values:
+          - src/main/resources/TestData/Generated/REST countries API/v31Capital_capital.csv
+          objectValues: null
+        - name: predicates
+          values:
+          - http://dbpedia.org/property/capital
+          objectValues: null
+        - name: numberOfTriesToGenerateRegex
+          values:
+          - 2
+          objectValues: null
+        valid: true
+    expectedResponse: 200

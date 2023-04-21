@@ -1,0 +1,22 @@
+---
+auth:
+  required: true
+  queryParams: {}
+  headerParams: {}
+  apiKeysPath: null
+  headersPath: null
+  oauthPath: null
+testConfiguration:
+  operations:
+  - testPath: /sampleEndpoint
+    operationId: sampleEndpoint
+    method: get
+    testParameters:
+    - name: isbn
+      in: query
+      weight: null
+      generators:
+      - type: SemanticParameter
+        genParameters: []
+        valid: true
+    expectedResponse: 200

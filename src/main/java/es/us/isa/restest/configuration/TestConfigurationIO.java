@@ -53,9 +53,6 @@ public class TestConfigurationIO {
 				case "put":
 					x.setOpenApiOperation(pathItem.getPut());
 					break;
-				case "patch":
-					x.setOpenApiOperation(pathItem.getPatch());
-					break;
 				case "delete":
 					x.setOpenApiOperation(pathItem.getDelete());
 					break;

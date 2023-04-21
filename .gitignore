@@ -42,4 +42,3 @@ src/test/resources/restest-test-resources/test_collection_urlencoded.postman_col
 /bin/
 
 stateful_data.json
-/src/main/resources/TestData/Generated/

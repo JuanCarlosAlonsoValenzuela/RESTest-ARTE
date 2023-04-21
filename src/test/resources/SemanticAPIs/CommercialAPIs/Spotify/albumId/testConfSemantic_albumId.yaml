@@ -1,0 +1,65 @@
+---
+auth:
+  required: true
+  queryParams: {}
+  headerParams:
+    Authorization: Bearer BQCfV-n4miPqHy0WxAqtpqx3-fW9EnPh0cM-IfEefPdnBSk_w-IU_LFhXJ3WvQDAp8F8BsHQuO4Xn3VRlSTWhD6Z8uC-RwWSnTttTRoiCFtYOY6Lt5TvVKdtqYeKmE3jCNPXoSarh6qnGG5vD5ww4UxA-402WLfRKI19JgV4LDETRqNSfaf9m2qsu59l3Dw2ssIEAqhavr05g9AhoJF59zbQ2eMz81aJ9jPfCoNHoMeDWESIaUkbkrCfcvFi-QcBMWtUwPIqEq45ux12U7f3CjzEM1qw12e75-XR8UgX
+  apiKeysPath: null
+  headersPath: null
+  oauthPath: null
+testConfiguration:
+  operations:
+  - testPath: "/albums/{id}"
+    operationId: GetAlbum
+    method: get
+    testParameters:
+    - name: id
+      in: path
+      weight: null
+      generators:
+      - type: RandomInputValue
+        genParameters:
+        - name: values
+          values:
+          - 382ObEPsp2rxGrnsizN5TX
+          - 1A2GTWGtFfWp7KSQTwWOyo
+          - 2noRn2Aes5aoNVsU6iWThc
+          - 4PgleR09JVnm3zY1fW3XBA
+          - 58ufpQsJ1DS5kq4hhzQDiI
+          - 6J84szYCnMfzEcvIcfWMFL
+          - 4YzNjecIvmLFEby13NOBmj
+          - 21GSy4UKShEpEfrojAEK9U
+          - 0swM8EuQkgYV2knrZ8rFl2
+          - 2B4G3D8pCGzk3ryWVPD6ga
+          - 2AW6HCRfGox94vO7GMQSLD
+          - 5FVNWYM95qgM8Wkzksnszy
+          - 3yaQNz5hglJrlaVJTLcUCb
+          - 6ajdXlPMknejXW5TxqTMr0
+          - 5XWqGM9qDxw3KjQCBgewAV
+          - 4s096NcPZeqXsj8gQ1R1aT
+          - 0T3RVlrWzids265ebYOkDq
+          - 6ixZvq546olo2LumeG66UW
+          - 3qrqWaQBRtiDvKnVgi2Jhk
+          - 6NnxUxgj1FlneEPzSaRflN
+          objectValues: null
+        valid: true
+    - name: market
+      in: query
+      weight: 0.5
+      generators:
+      - type: RandomInputValue
+        genParameters:
+        - name: csv
+          values:
+          - src/main/resources/TestData/Generated/Spotify/GetAlbum_market.csv
+          objectValues: null
+        - name: predicates
+          values:
+          - http://dbpedia.org/property/countryCode
+          objectValues: null
+        - name: numberOfTriesToGenerateRegex
+          values:
+          - 1
+          objectValues: null
+        valid: true
+    expectedResponse: 200

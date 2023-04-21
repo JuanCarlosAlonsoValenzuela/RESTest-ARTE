@@ -19,12 +19,11 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static es.us.isa.restest.inputs.semantic.ARTEInputGenerator.minSupport;
+import static es.us.isa.restest.inputs.semantic.ARTEInputGenerator.*;
 import static es.us.isa.restest.inputs.semantic.NLPUtils.extractPredicateCandidatesFromDescription;
 import static es.us.isa.restest.inputs.semantic.NLPUtils.posTagging;
 import static es.us.isa.restest.inputs.semantic.SPARQLUtils.executeSPARQLQueryCount;
 import static es.us.isa.restest.inputs.semantic.SPARQLUtils.generateQuery;
-import static es.us.isa.restest.inputs.semantic.ARTEInputGenerator.szEndpoint;
 
 public class Predicates {
 
@@ -239,7 +238,7 @@ public class Predicates {
         // Execute query
         int iCount = 0;
         ResultSet rs = qexec.execSelect();
-        while (rs.hasNext() && iCount<5) {
+        while (rs.hasNext() && iCount < maxNumberOfCandidatePredicates) {
             iCount++;
 
             QuerySolution qs = rs.next();

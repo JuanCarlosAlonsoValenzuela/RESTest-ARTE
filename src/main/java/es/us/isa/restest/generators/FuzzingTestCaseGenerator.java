@@ -27,9 +27,7 @@ import java.util.*;
 
 import static es.us.isa.restest.inputs.fuzzing.FuzzingDictionary.getFuzzingValues;
 import static es.us.isa.restest.inputs.fuzzing.FuzzingDictionary.getNodeFromValue;
-import static es.us.isa.restest.util.SchemaManager.generateFullyResolvedSchema;
 import static es.us.isa.restest.util.SchemaManager.resolveSchema;
-import static es.us.isa.restest.util.SpecificationVisitor.MEDIA_TYPE_APPLICATION_JSON_REGEX;
 
 /**
  * This class implements a generator of fuzzing test cases. It uses a customizable dictionary to obtain
@@ -103,15 +101,11 @@ public class FuzzingTestCaseGenerator extends AbstractTestCaseGenerator {
     }
 
     private void generateFuzzingBody(TestCase tc, TestParameter testParam, Operation testOperation) {
-        Map.Entry<String, MediaType> mediaTypeEntry = testOperation.getOpenApiOperation().getRequestBody().getContent().entrySet()
-                .stream().filter(x -> x.getKey().matches(MEDIA_TYPE_APPLICATION_JSON_REGEX)).findFirst().orElse(null);
-        MediaType requestBody = null;
-        if (mediaTypeEntry != null)
-            requestBody = mediaTypeEntry.getValue();
+        MediaType requestBody = testOperation.getOpenApiOperation().getRequestBody().getContent().get("application/json");
 
         if (requestBody != null) {
             JsonNode node = null;
-            Schema schema = generateFullyResolvedSchema(requestBody.getSchema(), spec.getSpecification());
+            Schema schema = resolveSchema(requestBody.getSchema(), spec.getSpecification());
             if ("array".equals(schema.getType()))
                 node = objectMapper.createArrayNode();
             else
@@ -134,9 +128,9 @@ public class FuzzingTestCaseGenerator extends AbstractTestCaseGenerator {
         }
 
         Set<Map.Entry> entries = new HashSet<>();
-        if (schema instanceof ObjectSchema || "object".equals(schema.getType()))
+        if (schema instanceof ObjectSchema)
             entries.addAll(schema.getProperties().entrySet());
-        else if (schema instanceof ArraySchema || "array".equals(schema.getType()))
+        else if (schema instanceof ArraySchema)
             entries.add(new AbstractMap.SimpleEntry<>(null, ((ArraySchema) schema).getItems()));
 
         for (Object o : entries) {
@@ -145,7 +139,6 @@ public class FuzzingTestCaseGenerator extends AbstractTestCaseGenerator {
                     || (requiredProperties != null && requiredProperties.contains(entry.getKey())) // Req. property
                     || ((requiredProperties == null || !requiredProperties.contains(entry.getKey())) && rand.nextBoolean())) { // Optional property (50% prob.)
                 JsonNode childNode = null;
-                entry.setValue(generateFullyResolvedSchema(entry.getValue(), spec.getSpecification()));
                 if ("object".equals(entry.getValue().getType())) {
                     childNode = objectMapper.createObjectNode();
                     generateFuzzingBody(entry.getValue(), childNode, entry.getValue().getRequired());
